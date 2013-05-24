@@ -8,6 +8,8 @@ use Carp qw(confess croak);
 use SOAP::Lite;
 use MIME::Base64;
 
+our $VERSION = '0.01';
+
 sub new {
         my( $class, %args )	= @_;
         my $self                = bless {}, $class;
@@ -40,7 +42,7 @@ sub _request {
 
 	#push @params, SOAP::Data->name( %{$args{data}} );
 	use Data::Dumper;
-	#print Dumper( @params );
+	print Dumper( @params );
         $self->_set_uri( $args{module}, $args{interface} );
         my $method      = $args{method};
         my $query       = $self->{_client}->$method(@params);

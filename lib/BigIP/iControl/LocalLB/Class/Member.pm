@@ -3,16 +3,47 @@ package BigIP::iControl::LocalLB::Class::Member;
 use strict;
 use warnings;
 
+use Scalar::Util qw(weaken);
+
 sub new {
-	my ( $class, $name, $value ) = @_;
-	my $self	= bless {}, $class;
-	$self->{name}	= $name;
-	$self->{value}	= $value;
+	my ( $class, $name, $value, $class_name, $type, $icontrol ) = @_;
+	my $self		= bless {}, $class;
+	$self->{name}		= $name;
+	$self->{value}		= $value;
+	$self->{class_name}	= $class_name;
+	$self->{type}		= $type;
+	weaken( $self->{_icontrol} = $icontrol );
 	return $self
 }
 
-sub name { return $_[0]->{name} }
+sub name { 
+	my $self = shift;
+	return $self->{name} }
 
-sub value { return $_[0]->{value} }
+sub value { 
+	my ( $self, $value ) = shift;
+
+	return $self->{value} unless $value;
+	
+	if ( $self->{type} eq 'string' ) {
+		$self->{_control}->_request( 
+					module		=> 'LocalLB',
+					interface	=> 'Class',
+					method		=> 'set_string_class_member_data_value',
+					data		=> {
+							class_members	=> [ 
+									     {	name	=> $self->{name},
+										members	=> [ $self->{name} ] 
+									     }
+									   ],
+							values		=> [
+									     [ $value ]
+									   ]
+							}
+					);
+		return $self
+	}
+
+}
 
 1;

@@ -14,24 +14,24 @@ sub new {
 }
 
 sub string_class {
-	my( $self, $class ) = @_;
+	my( $self, $name ) = @_;
 	my $members = @{ $self->{_icontrol}->_request(
 				module		=> 'LocalLB', 
 				interface	=> 'Class', 
 				method		=> 'get_string_class', 
-				data		=> { class_names => [$class] } 
+				data		=> { class_names => [$name] } 
 			) }[0] ;
 	
 	my @values = @{ $self->{_icontrol}->_request(
 				module		=> 'LocalLB', 
 				interface	=> 'Class',
 				method		=> 'get_string_class_member_data_value', 
-				data		=> { name => $class, class_members => [$members] } 
+				data		=> { name => $name, class_members => [$members] } 
 			) }[0];
 	
 	my %members;
 	@members{ @{ $members->{members} } } = @{ $values[0] };
-	my $string_class = BigIP::iControl::LocalLB::Class::StringClass->new( $class, %members );
+	my $string_class = BigIP::iControl::LocalLB::Class::StringClass->new( $name, $self->{_icontrol}, %members );
 	return $string_class;
 }
 
