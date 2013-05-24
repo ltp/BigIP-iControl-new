@@ -21,18 +21,19 @@ sub name {
 	return $self->{name} }
 
 sub value { 
-	my ( $self, $value ) = shift;
+	my ( $self, $value ) = @_;
+	print "Called value() with $value\n";
 
 	return $self->{value} unless $value;
 	
 	if ( $self->{type} eq 'string' ) {
-		$self->{_control}->_request( 
+		$self->{_icontrol}->_request( 
 					module		=> 'LocalLB',
 					interface	=> 'Class',
 					method		=> 'set_string_class_member_data_value',
 					data		=> {
 							class_members	=> [ 
-									     {	name	=> $self->{name},
+									     {	name	=> $self->{class_name},
 										members	=> [ $self->{name} ] 
 									     }
 									   ],
