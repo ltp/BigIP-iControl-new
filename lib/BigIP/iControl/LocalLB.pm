@@ -22,6 +22,7 @@ sub string_class {
 				method		=> 'get_string_class', 
 				data		=> { class_names => [$name] } 
 			) }[0] ;
+	print "foo\n";
 	
 	my @values = @{ $self->{_icontrol}->_request(
 				module		=> 'LocalLB', 
@@ -42,9 +43,9 @@ sub string_class_list {
 }
 
 sub virtual_server {
-	my $self = shift;
-	$self->{_virtual} ||= BigIP::iControl::LocalLB::VirtualServer->new( $self->{_icontrol} );
-	return $self->{_virtual}
+	my( $self, $name ) = @_;
+	my $virtual = BigIP::iControl::LocalLB::VirtualServer->new( $self->{_icontrol}, $name );
+	return $virtual
 }
 
 1;

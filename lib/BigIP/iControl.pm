@@ -3,11 +3,12 @@ package BigIP::iControl;
 use strict;
 use warnings;
 
-use BigIP::iControl::LocalLB;
 use Carp qw(confess croak);
 use SOAP::Lite;
 use MIME::Base64;
 use Data::Dumper;
+use BigIP::iControl::Deserializer;
+use BigIP::iControl::LocalLB;
 
 our $VERSION = '0.01';
 
@@ -19,8 +20,9 @@ sub new {
         defined $args{password} ? $self->{password} = $args{password} : croak 'Constructor failed: password not defined';
         $self->{proto}          = ($args{proto} or 'https');
         $self->{port}           = ($args{port}  or '443');
-        $self->{_client}        = SOAP::Lite->proxy($self->{proto}.'://'.$self->{server}
-                                  .':'.$self->{port}.'/iControl/iControlPortal.cgi');
+        $self->{_client}        = SOAP::Lite->proxy( $self->{proto}.'://'.$self->{server}
+							.':'.$self->{port}.'/iControl/iControlPortal.cgi' )
+				  ->deserializer( BigIP::iControl::Deserializer->new );
         $self->{_client}
              ->transport
              ->http_request
