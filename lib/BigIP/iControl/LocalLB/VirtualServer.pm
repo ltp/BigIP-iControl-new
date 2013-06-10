@@ -15,10 +15,20 @@ sub new {
 	return $self
 }
 
+sub destination { 
+	my $self = shift;
+	$self->{name} or return;
+	return @{$self->{_icontrol}->_request(	module		=> 'LocalLB', 
+						interface 	=> 'VirtualServer',
+						method 		=> 'get_destination', 
+						data 		=> { virtual_servers => [ $self->{name} ] }
+					)
+		}[0];
+}
+
 sub state { 
 	my $self = shift;
 	$self->{name} or return;
-	#return @{$self->_request(module => 'LocalLB', interface => 'VirtualServer', method => 'get_enabled_state', data => {vir     tual_servers => [$vs]})}[0];
 	return @{$self->{_icontrol}->_request(	module		=> 'LocalLB', 
 						interface 	=> 'VirtualServer',
 						method 		=> 'get_enabled_state', 
