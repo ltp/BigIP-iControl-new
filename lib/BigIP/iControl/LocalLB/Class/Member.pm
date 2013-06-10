@@ -22,7 +22,6 @@ sub name {
 
 sub value { 
 	my ( $self, $value ) = @_;
-	print "Called value() with $value\n";
 
 	return $self->{value} unless $value;
 	

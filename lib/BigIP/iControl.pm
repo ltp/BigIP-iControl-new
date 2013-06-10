@@ -7,6 +7,7 @@ use BigIP::iControl::LocalLB;
 use Carp qw(confess croak);
 use SOAP::Lite;
 use MIME::Base64;
+use Data::Dumper;
 
 our $VERSION = '0.01';
 
@@ -33,6 +34,7 @@ sub new {
 sub _request {
         my ($self, %args)= @_;
 
+	#print Dumper( \%args );
 	my @params;
 
 	foreach my $param ( keys %{ $args{data} } ) {
@@ -41,8 +43,7 @@ sub _request {
 	}
 
 	#push @params, SOAP::Data->name( %{$args{data}} );
-	use Data::Dumper;
-	print Dumper( @params );
+	#print Dumper( @params );
         $self->_set_uri( $args{module}, $args{interface} );
         my $method      = $args{method};
         my $query       = $self->{_client}->$method(@params);

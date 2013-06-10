@@ -3,6 +3,7 @@ package BigIP::iControl::LocalLB;
 use strict;
 use warnings;
 
+use BigIP::iControl::LocalLB::VirtualServer;
 use BigIP::iControl::LocalLB::Class::StringClass;
 use Scalar::Util qw(weaken);
 
@@ -38,6 +39,12 @@ sub string_class {
 sub string_class_list {
 	my( $self ) = @_;
 	return $self->{_icontrol}->_request(module => 'LocalLB', interface => 'Class', method => 'get_string_class_list') 
+}
+
+sub virtual_server {
+	my $self = shift;
+	$self->{_virtual} ||= BigIP::iControl::LocalLB::VirtualServer->new( $self->{_icontrol} );
+	return $self->{_virtual}
 }
 
 1;
