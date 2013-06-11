@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Scalar::Util qw(weaken);
+use BigIP::iControl::Common::IPPortDefinition;
 
 our $VERSION = '0.01';
 
@@ -18,12 +19,14 @@ sub new {
 sub destination { 
 	my $self = shift;
 	$self->{name} or return;
-	return @{$self->{_icontrol}->_request(	module		=> 'LocalLB', 
+	return BigIP::iControl::Common::IPPortDefinition->new(
+		$self->{_icontrol},
+		@{$self->{_icontrol}->_request(	module		=> 'LocalLB', 
 						interface 	=> 'VirtualServer',
 						method 		=> 'get_destination', 
 						data 		=> { virtual_servers => [ $self->{name} ] }
 					)
-		}[0];
+		}[0] )
 }
 
 sub state { 
@@ -44,3 +47,5 @@ sub get_list {
 						method 		=> 'get_list') 
 		}
 }
+
+1;
