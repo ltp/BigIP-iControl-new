@@ -2,6 +2,7 @@ package BigIP::iControl::LocalLB::Class::Member;
 
 use strict;
 use warnings;
+use overload ( '""' => \&_stringify );
 
 use Scalar::Util qw(weaken);
 
@@ -44,6 +45,11 @@ sub value {
 		return $self
 	}
 
+}
+
+sub _stringify {
+	my $self = shift;
+	return $self->{ value }
 }
 
 1;
