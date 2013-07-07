@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use BigIP::iControl::LocalLB::VirtualServer;
+use BigIP::iControl::LocalLB::Rule;
 use BigIP::iControl::LocalLB::Class::StringClass;
 use Scalar::Util qw(weaken);
 
@@ -46,6 +47,12 @@ sub virtual_server {
 	my( $self, $name ) = @_;
 	my $virtual = BigIP::iControl::LocalLB::VirtualServer->new( $self->{_icontrol}, $name );
 	return $virtual
+}
+
+sub rule {
+	my( $self, $name ) = @_;
+	my $rule = BigIP::iControl::LocalLB::Rule->new( $self->{_icontrol}, $name );
+	return $rule;
 }
 
 1;
