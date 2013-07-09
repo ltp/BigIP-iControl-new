@@ -5,6 +5,8 @@ use warnings;
 
 use Scalar::Util qw(weaken);
 
+our $VERSION = '0.01';
+
 sub new {
 	my( $class, $icontrol, $name, %args ) = @_;
 	my $self = bless {}, $class;
