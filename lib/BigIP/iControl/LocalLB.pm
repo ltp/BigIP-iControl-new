@@ -23,7 +23,6 @@ sub string_class {
 				method		=> 'get_string_class', 
 				data		=> { class_names => [$name] } 
 			) }[0] ;
-	print "foo\n";
 	
 	my @values = @{ $self->{_icontrol}->_request(
 				module		=> 'LocalLB', 
@@ -49,10 +48,17 @@ sub virtual_server {
 	return $virtual
 }
 
-sub rule {
+sub query_rule {
 	my( $self, $name ) = @_;
 	my $rule = BigIP::iControl::LocalLB::Rule->new( $self->{_icontrol}, $name );
 	return $rule;
+}
+
+sub create_rule {
+	my( $self, %args ) = @_;
+	defined $args{name}		or do { warn "name parameter must not be null\n"; return undef 		};
+	defined $args{definition}	or do { warn "definition parameter must not be null\n"; return undef 	};
+	my $rule = BigIP::iControl::LocalLB::Rule->new( $self->{_icontrol}, %args );
 }
 
 1;
