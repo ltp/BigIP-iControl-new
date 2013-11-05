@@ -29,12 +29,18 @@ sub name {
 sub definition {
 	my $self = shift;
 	$self->{name} or return;
-	return @{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+
+	my $rule = 
+		$self->{_icontrol}->_request(module	=> 'LocalLB',
 					      interface	=> 'Rule',
 					      method	=> 'query_rule',
 					      data	=> { rule_names => [ $self->{name} ] }
-					)
-		}[0]->{rule_definition};
+					);
+
+	return ( (ref $rule) eq 'HASH' and defined $rule->{_has_fault} )
+			? do { warn $rule->{faultstring}; undef }
+			: $rule->[0]->{rule_definition} 
+			;
 }
 
 1;
