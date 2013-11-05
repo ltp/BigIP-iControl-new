@@ -34,6 +34,7 @@ sub member {
 	my ( $self, $member ) = @_;
 	$member or return "Member name not specified";
 
+	return grep { $_->name eq $member } $self->members;
 	foreach my $m ( $self->members ) {
 		if ( $m->name eq $member ) {
 			return $m
