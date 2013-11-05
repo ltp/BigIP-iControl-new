@@ -36,7 +36,6 @@ sub new {
 sub _request {
         my ($self, %args)= @_;
 
-	#print Dumper( \%args );
 	my @params;
 
 	foreach my $param ( keys %{ $args{data} } ) {
@@ -44,12 +43,13 @@ sub _request {
 		push @params, SOAP::Data->name( $param => $value )
 	}
 
-	#push @params, SOAP::Data->name( %{$args{data}} );
-	#print Dumper( @params );
         $self->_set_uri( $args{module}, $args{interface} );
         my $method      = $args{method};
         my $query       = $self->{_client}->$method(@params);
-        $query->fault and confess('SOAP call failed: ', $query->faultstring());
+	$self->_unset_uri;
+	return $query->fault ? do { $query->fault->{_has_fault} = 1 ; $query->fault } : $query->result;
+
+        $query->fault and confess('SOAP call failed: ', $query->faultstring);
         $self->_unset_uri();                     
 
         return $query->result;          
