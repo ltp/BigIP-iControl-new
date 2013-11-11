@@ -50,7 +50,7 @@ sub virtual_server {
 
 sub query_rule {
 	my( $self, $name ) = @_;
-	my $rule = BigIP::iControl::LocalLB::Rule->new( $self->{_icontrol}, $name );
+	my $rule = BigIP::iControl::LocalLB::Rule->new( $self->{_icontrol}, { name => $name } );
 	return $rule;
 }
 
@@ -58,7 +58,7 @@ sub create_rule {
 	my( $self, %args ) = @_;
 	defined $args{name}		or do { warn "name parameter must not be null\n"; return undef 		};
 	defined $args{definition}	or do { warn "definition parameter must not be null\n"; return undef 	};
-	my $rule = BigIP::iControl::LocalLB::Rule->new( $self->{_icontrol}, %args );
+	my $rule = BigIP::iControl::LocalLB::Rule->_create( $self->{_icontrol}, %args );
 }
 
 1;
