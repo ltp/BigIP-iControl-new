@@ -61,6 +61,23 @@ sub create_rule {
 	my $rule = BigIP::iControl::LocalLB::Rule->_create( $self->{_icontrol}, %args );
 }
 
+sub delete_rule {
+	my ( $self, %args ) = @_;
+	defined $args{rule_names}	or do { warn "rule_names parameter must not be null\n"; return undef	};
+	( ref( $args{rule_names} ) eq 'ARRAY' ) 
+					or do { warn "rule_names parameter type must be array\n"; return undef	};
+	my $res = $self->{_icontrol}->_request(
+				module		=> 'LocalLB',
+				interface	=> 'Rule',
+				method		=> 'delete_rule',
+				data		=> { rule_names => $args{rule_names} }
+		);
+
+	return ( (ref $res) eq 'HASH' and defined $res->{_has_fault} )
+		? do { warn $res->{faulstring}; undef }
+		: 1 ;
+}
+
 1;
 
 __END__
@@ -96,6 +113,13 @@ RULE
 	$icontrol->ltm->create_rule( name => "Redirect_foo", definition => $definition );
 
 Creates a new iRule in the LocalLB (LTM) scope.
+
+=head3 delete_rule( rule_names => \@ARRAY )
+
+	my @rules = qw(My_Rule My_Other_Rule);
+	$icontrol->ltm->delete_rules( \@rules );
+
+Deletes the LocalLB iRules identified by the members of the array passed to the method.
 
 =head3 query_rule( $SCALAR )
 
