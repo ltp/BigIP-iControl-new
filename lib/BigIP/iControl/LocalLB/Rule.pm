@@ -18,6 +18,7 @@ sub new {
 
 sub _create {
 	my $self = new( @_ );
+	$self->{definition} = $self->{_args}{definition};
 
 	my $res = $self->{_icontrol}->_request(
 				module		=> 'LocalLB',
