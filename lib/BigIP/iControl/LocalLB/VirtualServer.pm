@@ -63,3 +63,89 @@ sub get_list {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+BigIP::iControl::LocalLB::VirtualServer - Class for operations with LocalLB virtual servers.
+
+=head1 DESCRIPTION
+
+This module provides an interface to LocalLB virtual server management capabilities.
+
+=head1 METHODS
+
+=head3 destination( VOID )
+
+Returns the destination (the host or network IP address) of the L<BigIP::iControl::LocalLB::Virtual>
+object.
+
+=head3 state( VOID )
+
+Returns the operational state of the L<BigIP::iControl::LocalLB::Virtual> object.
+
+=head3 rules( VOID )
+
+Returns an array of scalars with each scalar representing the name of an iRule attached
+to the specified virtual server.
+
+=head3 get_list
+
+Returns a list of all virtual servers.
+
+=head1 AUTHOR
+
+Luke Poskitt, C<< <ltp at cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-bigip-icontrol at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=BigIP-iControl-LocalLB-VirtualServer>.  
+I will be notified, and then you'll automatically be notified of progress on your bug as I make changes.
+
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc BigIP::iControl::LocalLB::VirtualServer
+
+
+You can also look for information at:
+
+=over 4
+
+=item * RT: CPAN's request tracker (report bugs here)
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=BigIP-iControl-LocalLB-VirtualServer>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/BigIP-iControl-LocalLB-VirtualServer>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/BigIP-iControl-LocalLB-VirtualServer>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/BigIP-iControl-LocalLB-VirtualServer/>
+
+=back
+
+
+=head1 ACKNOWLEDGEMENTS
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2013 Luke Poskitt.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
+=cut
