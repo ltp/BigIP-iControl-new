@@ -28,9 +28,9 @@ sub new {
              ->http_request
              ->header( 'Authorization' => 'Basic ' . MIME::Base64::encode( "$self->{username}:$self->{password}" ) );
 
-        eval { $self->{_client}->transport->ssl_opts( verify_hostname => $args{verify_hostname} ) }; 
+        eval { $self->{_client}->transport->ssl_opts( verify_hostname => $args{verify_hostname} ) };
 
-        return $self;
+        return ( $@ ? undef : $self )
 }
 
 sub _request {
@@ -99,10 +99,16 @@ Perhaps a little code snippet.
     my $foo = BigIP::iControl->new();
     ...
 
-=head1 EXPORT
+=head1 METHODS
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+=head3 new( server => $SERVER, username => $USERNAME, password => $PASSWORD, port => $PORT, proto => $PROTO, verify_hsotname => BOOL )
+
+Constructor; creates a new BigIP::iControl object representing a connection to the iControl SOAP
+API of the target device.
+
+=head3 ltm( VOID )
+
+Provides access to the LocalLB interface of the iControl API
 
 =head1 AUTHOR
 
