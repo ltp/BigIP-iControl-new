@@ -63,3 +63,83 @@ sub definition {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+BigIP::iControl::LocalLB::Rule - Class for operations with the LocalLB domain Rules module of BigIP devices.
+
+=head1 DESCRIPTION
+
+This module provides an interface to the LocalLB (LTM) Rule module of a BigIP device.
+
+=head1 METHODS
+
+=head3 name
+
+	print $icontrol->ltm->rule( 'Force_SSL' )->name;
+	# Prints, surprisingly enough, 'Force_SSL' which is the name of the Rule
+
+Returns a scalar containing the the name of the iRule - this method may initially seem redundant 
+but is useful when retrieving iRule for processing as an array of objects.
+
+=head3 definition
+
+Returns the Rule definition as a scalar containing free-form text including line breaks.
+
+=head1 AUTHOR
+
+Luke Poskitt, C<< <ltp at cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-bigip-icontrol at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=BigIP-iControl-LocalLB>.  
+I will be notified, and then you'll automatically be notified of progress on your bug as I make changes.
+
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc BigIP::iControl::LocalLB::Rule
+
+
+You can also look for information at:
+
+=over 4
+
+=item * RT: CPAN's request tracker (report bugs here)
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=BigIP-iControl-LocalLB-Rule>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/BigIP-iControl-LocalLB-Rule>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/BigIP-iControl-LocalLB-Rule>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/BigIP-iControl-LocalLB-Rule/>
+
+=back
+
+
+=head1 ACKNOWLEDGEMENTS
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2013 Luke Poskitt.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
+=cut
