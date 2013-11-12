@@ -75,10 +75,40 @@ This module provides an interface to the LocalLB (LTM) module of a BigIP device.
 
 =head1 METHODS
 
-=head3 string_class
+=head3 string_class( $SCALAR )
+
+Returns a L<BigIP::iControl::LocalLB::Class::StringClass> object representing the requested
+String Class and its members.
 
 =head3 string_class_list
 
+Returns an array containing the names of all string classes on the target device.
+
+=head3 create_rule( name => $SCALAR, definition => $SCALAR )
+
+	my $rule = <<"RULE";
+when HTTP_REQUEST {
+  if { [HTTP::uri] starts_with "/foo/" } {
+    pool foo_pool
+  }
+}
+RULE
+	$icontrol->ltm->create_rule( name => "Redirect_foo", definition => $definition );
+
+Creates a new iRule in the LocalLB (LTM) scope.
+
+=head3 query_rule( $SCALAR )
+
+	my $rule = $icontrol->ltm->query_rule( 'Redirect Fu' );
+	print "Rule: Redirect Fu\nCode:\n" . $rule->definition;
+
+Returns the rule identified by the given name as a L<BigIP::iControl::LocalLB::Rule>
+object.
+
+=head3 virtual_server( $SCALAR )
+
+Returns the virtual server specified by the value of the mandatory parameter as a
+L<BigIP::iControl::LocalLB::VirtualServer> object.
 
 =head1 AUTHOR
 
@@ -95,7 +125,7 @@ I will be notified, and then you'll automatically be notified of progress on you
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc BigIP::iControl
+    perldoc BigIP::iControl::LocalLB
 
 
 You can also look for information at:
@@ -104,19 +134,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=BigIP-iControl>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=BigIP-iControl-LocalLB>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/BigIP-iControl>
+L<http://annocpan.org/dist/BigIP-iControl-LocalLB>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/BigIP-iControl>
+L<http://cpanratings.perl.org/d/BigIP-iControl-LocalLB>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/BigIP-iControl/>
+L<http://search.cpan.org/dist/BigIP-iControl-LocalLB/>
 
 =back
 
