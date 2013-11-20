@@ -18,5 +18,6 @@ pod_coverage_ok( 'BigIP::iControl::LocalLB::Rule', 		{ also_private => [ 'new' ]
 pod_coverage_ok( 'BigIP::iControl::LocalLB::VirtualServer', 	{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::Class::Member', 	{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::Class::StringClass',{ also_private => [ 'new' ] } );
+pod_coverage_ok( 'BigIP::iControl::Common::EnabledState',	{ also_private => [ 'new', 'stringify' ] } );
 done_testing();
 
