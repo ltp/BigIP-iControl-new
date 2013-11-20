@@ -3,9 +3,17 @@ package BigIP::iControl::LocalLB::Rule;
 use strict;
 use warnings;
 
+use BigIP::iControl::LocalLB::Rule::RuleDefinition;
 use Scalar::Util qw(weaken);
 
 our $VERSION = '0.01';
+
+sub _new {
+	my( $class, $icontrol, %args ) = @_;
+	my $self = bless {}, $class;
+	weaken( $self->{_icontrol} = $icontrol );
+	return $self;
+}
 
 sub new {
 	my( $class, $icontrol, %args ) = @_;
@@ -36,6 +44,14 @@ sub _create {
 		: 1 ;
 }
 
+sub get_list {
+	my $self = shift;
+	return @{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+					      interface	=> 'Rule',
+					      method	=> 'get_list'
+					) }
+}
+
 sub name {
 	my $self = shift;
 	$self->{name} or return;
@@ -45,6 +61,19 @@ sub name {
 					      data	=> { rule_names => [ $self->{name} ] }
 					)
 		}[0]->{rule_name};
+}
+
+sub query_rule {
+        my( $self, %rule_names ) = @_;
+	my @rules = @{ $self->{_icontrol}->_request(
+						module		=> 'LocalLB',
+						interface	=> 'Rule',
+						method		=> 'query_rule',
+						data		=> \%rule_names
+					) };
+
+	@rules = map { BigIP::iControl::LocalLB::Rule::RuleDefinition->new( $_ ) } @rules;
+	return @rules;
 }
 
 sub definition {
@@ -77,6 +106,12 @@ This module provides an interface to the LocalLB (LTM) Rule module of a BigIP de
 
 =head1 METHODS
 
+=head3 get_list 
+
+	my @rules = $ic->ltm->rule->get_list;
+
+Returns an array containing the name of all LocalLB rules.
+
 =head3 name
 
 	print $icontrol->ltm->rule( 'Force_SSL' )->name;
@@ -88,6 +123,11 @@ but is useful when retrieving iRule for processing as an array of objects.
 =head3 definition
 
 Returns the Rule definition as a scalar containing free-form text including line breaks.
+
+=head3 query_rule( rule_names => \@rule_names )
+
+Returns a list of L<BigIP::iControl::LocalLB::Rule::RuleDefinition> objects corresponding to
+the list of rule names provided as the mandatory I<rule_names> parameter.
 
 =head1 AUTHOR
 
