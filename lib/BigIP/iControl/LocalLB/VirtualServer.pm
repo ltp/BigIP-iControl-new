@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Scalar::Util qw(weaken);
+use BigIP::iControl::Common::EnabledState;
 use BigIP::iControl::Common::IPPortDefinition;
 use BigIP::iControl::LocalLB::VirtualServerRule;
 
@@ -15,6 +16,21 @@ sub new {
 	$self->{name} = $name;
 	weaken( $self->{_icontrol} = $icontrol );
 	return $self
+}
+
+sub get_enabled_state {
+	my( $self, $virtual_servers ) = @_;
+
+	my @states = map { BigIP::iControl::Common::EnabledState->new( $_ ) } 
+		@{  $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method		=> 'get_enabled_state',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+
+
+	return @states;
+							
 }
 
 sub destination { 
@@ -33,14 +49,13 @@ sub destination {
 sub rules { 
 	my $self = shift;
 	$self->{name} or return;
-	my @rules = map { BigIP::iControl::LocalLB::VirtualServerRule->new( $self->{_icontrol}, $_ ) }
+	return map { BigIP::iControl::LocalLB::VirtualServerRule->new( $self->{_icontrol}, $_ ) }
 		@{ @{$self->{_icontrol}->_request(module		=> 'LocalLB', 
 						interface 	=> 'VirtualServer',
 						method 		=> 'get_rule',
 						data 		=> { virtual_servers => [ $self->{name} ] }
 					)
 		}[0] };
-	return @rules
 }
 
 sub state { 
@@ -76,16 +91,20 @@ This module provides an interface to LocalLB virtual server management capabilit
 
 =head1 METHODS
 
-=head3 destination( VOID )
+=head3 get_enabled_state
+
+Returns the enabled state of the virtual server as a L<BigIP::iControl::Common::EnabledState> object.
+
+=head3 destination
 
 Returns the destination (the host or network IP address) of the L<BigIP::iControl::LocalLB::Virtual>
 object.
 
-=head3 state( VOID )
+=head3 state
 
 Returns the operational state of the L<BigIP::iControl::LocalLB::Virtual> object.
 
-=head3 rules( VOID )
+=head3 rules
 
 Returns an array of scalars with each scalar representing the name of an iRule attached
 to the specified virtual server.
