@@ -78,6 +78,13 @@ sub delete_rule {
 		: 1 ;
 }
 
+sub rule {
+	my $self = shift;
+	return ( defined $self->{_rule}
+		? $self->{_rule}
+		: BigIP::iControl::LocalLB::Rule->_new( $self->{_icontrol} ) );
+}
+
 1;
 
 __END__
@@ -91,6 +98,12 @@ BigIP::iControl::LocalLB - Class for operations with the LocalLB module of BigIP
 This module provides an interface to the LocalLB (LTM) module of a BigIP device.
 
 =head1 METHODS
+
+=head3 rule
+
+Returns a L<BigIP::iControl::LocalLB::Rule> object representing a logical connection
+to the Rule interface in the LocalLB module facilitating access to the methods in this
+namespace.
 
 =head3 string_class( $SCALAR )
 
