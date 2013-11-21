@@ -104,6 +104,10 @@ This module provides an interface to LocalLB virtual server management capabilit
 
 =head1 METHODS
 
+=head3 get_deafult_pool_name( \@virtual_servers )
+
+Gets the default pool names for the specified virtual servers.
+
 =head3 get_enabled_state
 
 Returns the enabled state of the virtual server as a L<BigIP::iControl::Common::EnabledState> object.
