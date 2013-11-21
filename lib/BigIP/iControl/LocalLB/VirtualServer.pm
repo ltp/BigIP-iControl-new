@@ -77,6 +77,19 @@ sub get_list {
 		}
 }
 
+sub get_default_pool_name {
+	my( $self, $virtual_servers ) = @_;
+
+	my @states = 
+		@{  $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method		=> 'get_default_pool_name',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+
+	return @states
+}
+
 1;
 
 __END__
