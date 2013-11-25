@@ -90,6 +90,20 @@ sub get_default_pool_name {
 	return @states
 }
 
+sub get_destination {
+	my( $self, $virtual_servers ) = @_;
+
+	my @destinations = 
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_destination',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+	@destinations = map { BigIP::iControl::Common::IPPortDefinition->new( undef, $_ ) } @destinations;
+
+	return @destinations
+}
+
 1;
 
 __END__
@@ -107,6 +121,11 @@ This module provides an interface to LocalLB virtual server management capabilit
 =head3 get_default_pool_name( \@virtual_servers )
 
 Gets the default pool names for the specified virtual servers.
+
+=head3 get_destination( \@virtual_servers )
+
+Gets the destination IP and port of the specified virtual servers as an array of 
+ L<BigIP::iControl::Common::IPPortDefinition> objects.
 
 =head3 get_enabled_state
 
