@@ -7,6 +7,7 @@ use Scalar::Util qw(weaken);
 use BigIP::iControl::Common::EnabledState;
 use BigIP::iControl::Common::IPPortDefinition;
 use BigIP::iControl::LocalLB::VirtualServerRule;
+use BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence;
 
 our $VERSION = '0.01';
 
@@ -102,6 +103,22 @@ sub get_destination {
 	@destinations = map { BigIP::iControl::Common::IPPortDefinition->new( undef, $_ ) } @destinations;
 
 	return @destinations
+}
+
+sub get_persistence_profile {
+	my( $self, $virtual_servers ) = @_;
+
+	my @profiles = 
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_persistence_profile',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+
+	return @profiles;
+	@profiles = map { BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence->new( undef, $_ ) } @profiles;
+
+	return @profiles
 }
 
 1;
