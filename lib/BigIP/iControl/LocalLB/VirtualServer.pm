@@ -108,15 +108,13 @@ sub get_destination {
 sub get_persistence_profile {
 	my( $self, $virtual_servers ) = @_;
 
-	my @profiles = 
-		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+	my @profiles = @{
+		   $self->{_icontrol}->_request(module		=> 'LocalLB',
 						interface	=> 'VirtualServer',
 						method 		=> 'get_persistence_profile',
 						data		=> { virtual_servers => $virtual_servers }
 					) };
-
-	return @profiles;
-	@profiles = map { BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence->new( undef, $_ ) } @profiles;
+	@profiles = map { BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence->new( $_ ) } @profiles;
 
 	return @profiles
 }
