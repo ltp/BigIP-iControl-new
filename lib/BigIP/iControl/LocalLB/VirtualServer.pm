@@ -119,6 +119,22 @@ sub get_persistence_profile {
 	return @profiles
 }
 
+sub get_protocol {
+	my( $self, $virtual_servers ) = @_;
+
+	my @protocols = @{
+		   $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_protocol',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+	
+	return @protocols;
+	@protocols = map { BigIP::iControl::Common::ProtocolType->new( $_ ) } @protocols;
+
+	return @protocols
+}
+
 1;
 
 __END__
