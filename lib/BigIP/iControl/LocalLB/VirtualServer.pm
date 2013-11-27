@@ -6,6 +6,7 @@ use warnings;
 use Scalar::Util qw(weaken);
 use BigIP::iControl::Common::EnabledState;
 use BigIP::iControl::Common::IPPortDefinition;
+use BigIP::iControl::Common::ProtocolType;
 use BigIP::iControl::LocalLB::VirtualServerRule;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence;
 
@@ -129,8 +130,8 @@ sub get_protocol {
 						data		=> { virtual_servers => $virtual_servers }
 					) };
 	
-	return @protocols;
 	@protocols = map { BigIP::iControl::Common::ProtocolType->new( $_ ) } @protocols;
+	print "proto: @protocols\n";
 
 	return @protocols
 }

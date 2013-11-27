@@ -1,4 +1,4 @@
-package Bigip::iControl::Common::ProtocolType;
+package BigIP::iControl::Common::ProtocolType;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use overload ('""' => \&_stringify );
 
 our $VERSION    = '0.01';
 
-our $DATA = {
+our %DATA = (
 	PROTOCOL_ANY		=> 0,
 	PROTOCOL_IPV6		=> 1,
 	PROTOCOL_ROUTING	=> 2,
@@ -19,7 +19,7 @@ our $DATA = {
 	PROTOCOL_ICMPV6		=> 9,
 	PROTOCOL_OSPF		=> 10,
 	PROTOCOL_SCTP		=> 11
-};
+);
 
 sub new {
         my( $class, $protocol ) = @_; 
