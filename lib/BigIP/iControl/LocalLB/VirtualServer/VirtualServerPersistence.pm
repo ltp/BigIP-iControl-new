@@ -31,17 +31,17 @@ BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence - Class for op
 
 =head1 DESCRIPTION
 
-This module provides an interface to the LocalLB (LTM) Class interface.
+This utility class facilitates operations with LocalLB (LTM) virtual server persistence records.
 
 =head1 METHODS
 
-=head3 name
+=head3 profile_name
 
-Returns the name of the specified class member.
+Returns the name of the virtual server persistence profile.
 
-=head3 value
+=head3 default_profile
 
-Returns the value of the specified class member.
+Returns the name of the default virtual server persistence profile.
 
 =head1 AUTHOR
 
@@ -50,7 +50,7 @@ Luke Poskitt, C<< <ltp at cpan.org> >>
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-bigip-icontrol at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=BigIP-iControl-LocalLB-Class-Member>.  
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=BigIP-iControl-LocalLB-VirtualServer-VirtualServerPersistence>.  
 I will be notified, and then you'll automatically be notified of progress on your bug as I make changes.
 
 
@@ -58,7 +58,7 @@ I will be notified, and then you'll automatically be notified of progress on you
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc BigIP::iControl::LocalLB::Class::Member
+    perldoc BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence
 
 
 You can also look for information at:
@@ -67,19 +67,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=BigIP-iControl-LocalLB-Class-Member>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=BigIP-iControl-LocalLB-VirtualServer-VirtualServerPersistence>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/BigIP-iControl-LocalLB-Class-Member>
+L<http://annocpan.org/dist/BigIP-iControl-LocalLB-VirtualServer-VirtualServerPersistence>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/BigIP-iControl-LocalLB-Class-Member>
+L<http://cpanratings.perl.org/d/BigIP-iControl-LocalLB-VirtualServer-VirtualServerPersistence>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/BigIP-iControl-LocalLB-Class-Member/>
+L<http://search.cpan.org/dist/BigIP-iControl-LocalLB-VirtualServer-VirtualServerPersistence/>
 
 =back
 
