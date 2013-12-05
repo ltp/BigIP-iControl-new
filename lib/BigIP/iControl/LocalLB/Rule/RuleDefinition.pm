@@ -29,11 +29,11 @@ This module implements a utility class for working with LocalLB rule definitions
 
 =head1 METHODS
 
-=head3 rule_name
+=head3 name
 
 Returns the name of the specified rule.
 
-=head3 rule_definition
+=head3 definition
 
 Returns the rule definition of the specified rule - this is the complete iRule text.
 
