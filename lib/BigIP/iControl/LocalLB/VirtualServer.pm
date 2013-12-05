@@ -163,6 +163,16 @@ Gets the destination IP and port of the specified virtual servers as an array of
 
 Returns the enabled state of the virtual server as a L<BigIP::iControl::Common::EnabledState> object.
 
+=head3 get_persistence_profile
+
+Returns a list of persistence profiles the specified virtual server is associated with as an array of  
+L<BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence> objects.
+
+=head3 get_protocol
+
+Returns the protocols supported by the specified virtual server as an array of 
+L<BigIP::iControl::Common::ProtocolType> objects.
+
 =head3 destination
 
 Returns the destination (the host or network IP address) of the L<BigIP::iControl::LocalLB::Virtual>
