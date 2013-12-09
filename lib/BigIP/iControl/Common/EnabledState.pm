@@ -45,7 +45,7 @@ Returns the enabled state of the virtual server as a integer value where:
 	STATE_ENABLED  => 1
 	STATE_DISABLED => 0
 
-Note that this class also implements an overloaded stringification method taht returns
+Note that this class also implements an overloaded stringification method that returns
 the same output as the I<state()> method.
 
 =head1 AUTHOR
