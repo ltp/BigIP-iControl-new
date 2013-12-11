@@ -106,6 +106,12 @@ This module provides an interface to the LocalLB (LTM) module of a BigIP device.
 
 =head1 METHODS
 
+=head3 pool
+
+Returns a L<BigIP::iControl::LocalLB::Pool> object representing a logical connection
+to the Pool interface in the LocalLB module and facilitating access to the methods in
+this namespace.
+
 =head3 rule
 
 Returns a L<BigIP::iControl::LocalLB::Rule> object representing a logical connection
