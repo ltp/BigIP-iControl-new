@@ -16,6 +16,7 @@ pod_coverage_ok( 'BigIP::iControl' );
 pod_coverage_ok( 'BigIP::iControl::LocalLB',	 			{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::Class::Member', 		{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::Class::StringClass',	{ also_private => [ 'new' ] } );
+pod_coverage_ok( 'BigIP::iControl::LocalLB::Pool', 			{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::Rule', 			{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::Rule::RuleDefinition',	{ also_private => [ 'new' ] } );
 pod_coverage_ok( 'BigIP::iControl::LocalLB::VirtualServer', 		{ also_private => [ 'new' ] } );
