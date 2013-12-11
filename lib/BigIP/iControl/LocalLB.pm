@@ -3,6 +3,7 @@ package BigIP::iControl::LocalLB;
 use strict;
 use warnings;
 
+use BigIP::iControl::LocalLB::Pool;
 use BigIP::iControl::LocalLB::VirtualServer;
 use BigIP::iControl::LocalLB::Rule;
 use BigIP::iControl::LocalLB::Class::StringClass;
@@ -40,6 +41,12 @@ sub string_class {
 sub string_class_list {
 	my( $self ) = @_;
 	return $self->{_icontrol}->_request(module => 'LocalLB', interface => 'Class', method => 'get_string_class_list') 
+}
+
+sub pool {
+	my( $self, $name ) = @_;
+	my $pool = BigIP::iControl::LocalLB::Pool->new( $self->{_icontrol}, $name );
+	return $pool
 }
 
 sub virtual_server {
