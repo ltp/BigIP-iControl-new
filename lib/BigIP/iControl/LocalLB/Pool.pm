@@ -17,16 +17,17 @@ sub new {
 
 sub get_member {
 	my ( $self, $pools ) = @_;
+	my @res;
 	
-	my @members = map { BigIP::iControl::Common::IPPortDefinition->new( $self->{_icontrol}, $_ ) }
-		@{ @{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+	foreach my $arr (@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_member',
 						data		=> { pool_names => $pools }
-						)
-		}[0] };
+	) }) {
+		push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $self->{_icontrol}, $_ ) } @{ $arr } ]
+	}
 
-	return @members
+	return @res
 }
 
 1;
@@ -43,8 +44,10 @@ This module provides an interface to LocalLB pool management capabilities.
 
 =head1 METHODS
 
-=head3 foo
+=head3 get_member( \@pools )
 
+Returns a list of lists of pool members as L<BigIP::iControl::Common::IPPortDefinition>
+objects for the specified pools.
 
 =head1 AUTHOR
 
