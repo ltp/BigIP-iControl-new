@@ -65,6 +65,11 @@ This module provides an interface to LocalLB pool management capabilities.
 Returns a list of lists of pool members as L<BigIP::iControl::Common::IPPortDefinition>
 objects for the specified pools.
 
+=head3 get_object_status( \@pools )
+
+Gets the statuses of the specified pools - returns a list of L<BigIP::iControl::LocalLB::ObjectStatus>
+objects representing the statuses of the requested pools.
+
 =head1 AUTHOR
 
 Luke Poskitt, C<< <ltp at cpan.org> >>
