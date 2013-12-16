@@ -3,6 +3,7 @@ package BigIP::iControl::LocalLB::Pool;
 use strict;
 use warnings;
 
+use BigIP::iControl::LocalLB::ObjectStatus;
 use Scalar::Util qw(weaken);
 
 our $VERSION = '0.01';
@@ -28,6 +29,21 @@ sub get_member {
 	}
 
 	return @res
+}
+
+sub get_object_status {
+	my ( $self, $pools ) = @_;
+	#foreach my $arr (@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+	return map { BigIP::iControl::LocalLB::ObjectStatus->new( $_ ) } 
+		@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_object_status',
+						data		=> { pool_names => $pools } ) }
+	#) }) {
+	#	push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $self->{_icontrol}, $_ ) } @{ $arr } ]
+	#}
+
+	#return @res
 }
 
 1;
