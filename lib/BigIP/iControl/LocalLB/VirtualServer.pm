@@ -39,7 +39,6 @@ sub destination {
 	my $self = shift;
 	$self->{name} or return;
 	return BigIP::iControl::Common::IPPortDefinition->new(
-		$self->{_icontrol},
 		@{$self->{_icontrol}->_request(	module		=> 'LocalLB', 
 						interface 	=> 'VirtualServer',
 						method 		=> 'get_destination', 

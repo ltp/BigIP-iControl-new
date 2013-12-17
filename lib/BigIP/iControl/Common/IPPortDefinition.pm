@@ -14,7 +14,7 @@ our @ACCESSORS	= qw(address port);
 }
 
 sub new {
-	my( $class, $icontrol, $args ) = @_;
+	my( $class, $args ) = @_;
 	my $self		= bless {}, $class;
 	$self->{ address }	= $args->{ address };
 	$self->{ port }		= $args->{ port };
