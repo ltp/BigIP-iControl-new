@@ -35,7 +35,7 @@ sub get_object_status {
 	my ( $self, $pools ) = @_;
 	#foreach my $arr (@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
 	return map { BigIP::iControl::LocalLB::ObjectStatus->new( $_ ) } 
-		@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_object_status',
 						data		=> { pool_names => $pools } ) }
@@ -44,6 +44,19 @@ sub get_object_status {
 	#}
 
 	#return @res
+}
+
+sub add_member {
+	my ( $self, $pools, $members ) = @_;
+
+	my $res = $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'add_member',
+						data		=> { pool_names => $pools, members => $members } );
+
+	return ( (ref $res) eq 'HASH' and defined $res->{_has_fault} )
+		? do { warn $res->{faultstring}; undef }
+		: 1 ;
 }
 
 1;
@@ -59,6 +72,10 @@ BigIP::iControl::LocalLB::Pool - Class for operations with LocalLB Pool inetrfac
 This module provides an interface to LocalLB pool management capabilities.
 
 =head1 METHODS
+
+=head3 add_member( \@pools, \@members )
+
+Adds members to the specified pools.
 
 =head3 get_member( \@pools )
 
