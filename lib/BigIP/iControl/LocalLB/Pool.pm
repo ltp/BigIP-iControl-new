@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use BigIP::iControl::LocalLB::ObjectStatus;
+use BigIP::iControl::LocalLB::Pool::PoolStatistics;
 use Scalar::Util qw(weaken);
 
 our $VERSION = '0.01';
@@ -47,16 +48,28 @@ sub get_object_status {
 }
 
 sub add_member {
-	my ( $self, $pools, $members ) = @_;
+	my ( $self, $pool_names, $members ) = @_;
 
 	my $res = $self->{_icontrol}->_request(	module		=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'add_member',
-						data		=> { pool_names => $pools, members => $members } );
+						data		=> { pool_names => $pool_names, members => $members } );
 
 	return ( (ref $res) eq 'HASH' and defined $res->{_has_fault} )
 		? do { warn $res->{faultstring}; undef }
 		: 1 ;
+}
+
+sub get_statistics {
+	my ( $self, $pool_names, $members ) = @_;
+
+	my $res = $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_statistics',
+						data		=> { pool_names => $pool_names } );
+	
+	my $stat = BigIP::iControl::LocalLB::Pool::PoolStatistics->new( $res );
+	
 }
 
 1;
