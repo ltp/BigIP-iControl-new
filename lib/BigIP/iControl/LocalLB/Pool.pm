@@ -78,7 +78,7 @@ __END__
 
 =head1 NAME
 
-BigIP::iControl::LocalLB::Pool - Class for operations with LocalLB Pool inetrface.
+BigIP::iControl::LocalLB::Pool - Class for operations with LocalLB Pool interface.
 
 =head1 DESCRIPTION
 
