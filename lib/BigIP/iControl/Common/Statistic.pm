@@ -16,4 +16,10 @@ sub new {
 	return $self
 }
 
+sub time_stamp { return $_[0]->{ time_stamp } }
+
+sub value { return $_[0]->{ value } }
+
+sub type { return $_[0]->{ type } }
+
 1;
