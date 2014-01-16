@@ -7,9 +7,10 @@ use Scalar::Util qw(weaken);
 use BigIP::iControl::Common::EnabledState;
 use BigIP::iControl::Common::IPPortDefinition;
 use BigIP::iControl::Common::ProtocolType;
+use BigIP::iControl::Common::VirtualServerDefinition;
 use BigIP::iControl::LocalLB::VirtualServerRule;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence;
-
+use BigIP::iControl::LocalLB::VirtualServer::VirtualServerStatistics;
 our $VERSION = '0.01';
 
 sub new {
@@ -133,6 +134,16 @@ sub get_protocol {
 	print "proto: @protocols\n";
 
 	return @protocols
+}
+
+sub get_all_statistics {
+	my $self = shift;
+
+	my $statistics = BigIP::iControl::LocalLB::VirtualServer::VirtualServerStatistics->new(
+		$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_all_statistics' ) );
+	return $statistics
 }
 
 1;
