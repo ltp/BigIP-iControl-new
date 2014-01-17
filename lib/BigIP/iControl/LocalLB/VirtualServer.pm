@@ -123,13 +123,21 @@ sub get_persistence_profile {
 sub get_fallback_persistence_profile {
 	my( $self, $virtual_servers ) = @_;
 
-	my @profiles = @{
-		   $self->{_icontrol}->_request(module		=> 'LocalLB',
+	return @{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
 						interface	=> 'VirtualServer',
 						method 		=> 'get_fallback_persistence_profile',
 						data		=> { virtual_servers => $virtual_servers }
 					) };
-	return @profiles
+}
+
+sub get_httpclass_profile {
+	my( $self, $virtual_servers ) = @_;
+
+	return @{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_httpclass_profile',
+						data		=> { virtual_servers => $virtual_servers }
+		) };
 }
 
 sub get_protocol {
