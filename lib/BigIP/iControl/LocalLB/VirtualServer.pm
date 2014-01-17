@@ -8,6 +8,7 @@ use BigIP::iControl::Common::EnabledState;
 use BigIP::iControl::Common::IPPortDefinition;
 use BigIP::iControl::Common::ProtocolType;
 use BigIP::iControl::Common::VirtualServerDefinition;
+use BigIP::iControl::LocalLB::ObjectStatus;
 use BigIP::iControl::LocalLB::VirtualServerRule;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerStatistics;
@@ -136,6 +137,17 @@ sub get_httpclass_profile {
 	return @{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
 						interface	=> 'VirtualServer',
 						method 		=> 'get_httpclass_profile',
+						data		=> { virtual_servers => $virtual_servers }
+		) };
+}
+
+sub get_object_status {
+	my( $self, $virtual_servers ) = @_;
+
+	return map { BigIP::iControl::LocalLB::ObjectStatus->new( $_ ) }
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_object_status',
 						data		=> { virtual_servers => $virtual_servers }
 		) };
 }
