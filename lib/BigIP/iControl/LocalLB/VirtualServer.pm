@@ -120,6 +120,18 @@ sub get_persistence_profile {
 	return @profiles
 }
 
+sub get_fallback_persistence_profile {
+	my( $self, $virtual_servers ) = @_;
+
+	my @profiles = @{
+		   $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_fallback_persistence_profile',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+	return @profiles
+}
+
 sub get_protocol {
 	my( $self, $virtual_servers ) = @_;
 
@@ -177,6 +189,10 @@ Returns the enabled state of the virtual server as a L<BigIP::iControl::Common::
 
 Returns a list of persistence profiles the specified virtual server is associated with as an array of  
 L<BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence> objects.
+
+=head3 get_fallback_persistence_profile ( \@virtual_servers )
+
+Returns a list of the fallback persistence profiles for the specified virtual servers.
 
 =head3 get_protocol
 
