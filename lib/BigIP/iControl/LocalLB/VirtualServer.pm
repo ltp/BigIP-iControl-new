@@ -14,6 +14,7 @@ use BigIP::iControl::LocalLB::PersistenceRecord;
 use BigIP::iControl::LocalLB::VirtualServerRule;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerStatistics;
+use BigIP::iControl::LocalLB::VirtualServer::VirtualServerProfileAttribute;
 our $VERSION = '0.01';
 
 sub new {
@@ -107,6 +108,28 @@ sub get_destination {
 	@destinations = map { BigIP::iControl::Common::IPPortDefinition->new( undef, $_ ) } @destinations;
 
 	return @destinations
+}
+
+sub get_profile {
+	my( $self, $virtual_servers ) = @_;
+	my @res;
+
+	my @profiles = 
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_profile',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+
+	foreach my $profile ( @profiles ) {
+		my @r = map { BigIP::iControl::LocalLB::VirtualServer::VirtualServerProfileAttribute->new( $_ ) } @{ $profile };
+		push @res, \@r
+	}
+
+	return @res
+	#@profiles = map { BigIP::iControl::Common::IPPortDefinition->new( undef, $_ ) } @profiles;
+
+	#return @profiles
 }
 
 sub get_persistence_profile {
