@@ -52,7 +52,7 @@ sub destination {
 		}[0] )
 }
 
-sub rules { 
+sub get_rules { 
 	my $self = shift;
 	$self->{name} or return;
 	return map { BigIP::iControl::LocalLB::VirtualServerRule->new( $self->{_icontrol}, $_ ) }
@@ -127,9 +127,6 @@ sub get_profile {
 	}
 
 	return @res
-	#@profiles = map { BigIP::iControl::Common::IPPortDefinition->new( undef, $_ ) } @profiles;
-
-	#return @profiles
 }
 
 sub get_persistence_profile {
@@ -279,7 +276,7 @@ object.
 
 Returns the operational state of the L<BigIP::iControl::LocalLB::Virtual> object.
 
-=head3 rules
+=head3 get_rules
 
 Returns an array of scalars with each scalar representing the name of an iRule attached
 to the specified virtual server.
