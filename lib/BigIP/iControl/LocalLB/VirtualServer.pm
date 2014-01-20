@@ -9,6 +9,8 @@ use BigIP::iControl::Common::IPPortDefinition;
 use BigIP::iControl::Common::ProtocolType;
 use BigIP::iControl::Common::VirtualServerDefinition;
 use BigIP::iControl::LocalLB::ObjectStatus;
+use BigIP::iControl::LocalLB::PersistenceMode;
+use BigIP::iControl::LocalLB::PersistenceRecord;
 use BigIP::iControl::LocalLB::VirtualServerRule;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence;
 use BigIP::iControl::LocalLB::VirtualServer::VirtualServerStatistics;
@@ -116,9 +118,35 @@ sub get_persistence_profile {
 						method 		=> 'get_persistence_profile',
 						data		=> { virtual_servers => $virtual_servers }
 					) };
+
 	@profiles = map { BigIP::iControl::LocalLB::VirtualServer::VirtualServerPersistence->new( $_ ) } @profiles;
 
 	return @profiles
+}
+
+sub get_persistence_record {
+	my( $self, $virtual_servers, $persistence_modes ) = @_;
+
+	my @res;
+	my @records = @{ 
+		$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_persistence_record',
+						data		=> { virtual_servers => $virtual_servers,
+								     persistence_modes => $persistence_modes }
+					) };
+
+	foreach my $record ( @records ) {
+		my @r;
+
+		if ($record ne '') {
+			@r = map { defined $_ ? BigIP::iControl::LocalLB::PersistenceRecord->new( $_ ) : [] } @{ $record };
+		}
+
+		push @res, \@r;
+	}
+
+	return @res;
 }
 
 sub get_fallback_persistence_profile {
