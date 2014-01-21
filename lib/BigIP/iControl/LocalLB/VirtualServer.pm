@@ -96,6 +96,17 @@ sub get_default_pool_name {
 	return @states
 }
 
+sub get_translate_address_state {
+	my( $self, $virtual_servers ) = @_;
+
+	return map { BigIP::iControl::Common::EnabledState->new( $_ ) } 
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_translate_address_state',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+}
+
 sub get_snat_type {
 	my( $self, $virtual_servers ) = @_;
 
