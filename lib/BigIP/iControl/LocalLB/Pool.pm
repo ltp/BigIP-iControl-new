@@ -32,6 +32,13 @@ sub get_member {
 	return @res
 }
 
+sub get_list {
+	my( $self, $pool_names ) = @_;
+	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_list' )
+}
+
 sub get_active_member_count {
 	my( $self, $pool_names ) = @_;
 	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
