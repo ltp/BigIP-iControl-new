@@ -239,6 +239,19 @@ sub get_statistics {
 	return $statistics
 }
 
+sub get_gtm_score {
+	my( $self, $virtual_servers ) = @_;
+
+	my @statistics = map { BigIP::iControl::Common::ULong64->new( $_ ) } @{
+		$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_gtm_score',
+						data		=> { virtual_servers => $virtual_servers } 
+					) };
+
+	return @statistics
+}
+
 sub get_all_statistics {
 	my $self = shift;
 
