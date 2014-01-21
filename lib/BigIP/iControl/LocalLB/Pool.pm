@@ -40,19 +40,21 @@ sub get_active_member_count {
 						data		=> { pool_names => $pool_names } )
 }
 
+sub get_lb_method {
+	my( $self, $pool_names ) = @_;
+	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_lb_method',
+						data		=> { pool_names => $pool_names } )
+}
+
 sub get_object_status {
 	my ( $self, $pools ) = @_;
-	#foreach my $arr (@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
 	return map { BigIP::iControl::LocalLB::ObjectStatus->new( $_ ) } 
 		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_object_status',
 						data		=> { pool_names => $pools } ) }
-	#) }) {
-	#	push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $self->{_icontrol}, $_ ) } @{ $arr } ]
-	#}
-
-	#return @res
 }
 
 sub add_member {
