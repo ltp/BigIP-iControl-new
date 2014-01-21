@@ -7,6 +7,7 @@ use Scalar::Util qw(weaken);
 use BigIP::iControl::Common::EnabledState;
 use BigIP::iControl::Common::IPPortDefinition;
 use BigIP::iControl::Common::ProtocolType;
+use BigIP::iControl::Common::VLANFilterList;
 use BigIP::iControl::Common::VirtualServerDefinition;
 use BigIP::iControl::LocalLB::ObjectStatus;
 use BigIP::iControl::LocalLB::PersistenceMode;
@@ -96,6 +97,17 @@ sub get_default_pool_name {
 	return @states
 }
 
+sub get_vlan {
+	my( $self, $virtual_servers ) = @_;
+
+	return map { BigIP::iControl::Common::VLANFilterList->new( $_ ) }
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_vlan',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+}
+
 sub get_translate_address_state {
 	my( $self, $virtual_servers ) = @_;
 
@@ -103,6 +115,17 @@ sub get_translate_address_state {
 		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
 						interface	=> 'VirtualServer',
 						method 		=> 'get_translate_address_state',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+}
+
+sub get_translate_port_state {
+	my( $self, $virtual_servers ) = @_;
+
+	return map { BigIP::iControl::Common::EnabledState->new( $_ ) } 
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_translate_port_state',
 						data		=> { virtual_servers => $virtual_servers }
 					) };
 }
