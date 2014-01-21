@@ -52,7 +52,7 @@ sub destination {
 		}[0] )
 }
 
-sub get_rules { 
+sub rules { 
 	my $self = shift;
 	$self->{name} or return;
 	return map { BigIP::iControl::LocalLB::VirtualServerRule->new( $self->{_icontrol}, $_ ) }
@@ -94,6 +94,16 @@ sub get_default_pool_name {
 					) };
 
 	return @states
+}
+
+sub get_snat_type {
+	my( $self, $virtual_servers ) = @_;
+
+	return @{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_snat_type',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
 }
 
 sub get_destination {
@@ -216,6 +226,19 @@ sub get_protocol {
 	return @protocols
 }
 
+sub get_statistics {
+	my( $self, $virtual_servers ) = @_;
+
+	my $statistics = BigIP::iControl::LocalLB::VirtualServer::VirtualServerStatistics->new(
+		$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_statistics',
+						data		=> { virtual_servers => $virtual_servers } 
+					) );
+
+	return $statistics
+}
+
 sub get_all_statistics {
 	my $self = shift;
 
@@ -276,7 +299,7 @@ object.
 
 Returns the operational state of the L<BigIP::iControl::LocalLB::Virtual> object.
 
-=head3 get_rules
+=head3 rules
 
 Returns an array of scalars with each scalar representing the name of an iRule attached
 to the specified virtual server.
