@@ -106,6 +106,16 @@ sub get_snat_type {
 					) };
 }
 
+sub get_snat_pool {
+	my( $self, $virtual_servers ) = @_;
+
+	return @{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'VirtualServer',
+						method 		=> 'get_snat_pool',
+						data		=> { virtual_servers => $virtual_servers }
+					) };
+}
+
 sub get_destination {
 	my( $self, $virtual_servers ) = @_;
 
