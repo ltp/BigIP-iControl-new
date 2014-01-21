@@ -68,6 +68,15 @@ sub add_member {
 		: 1 ;
 }
 
+sub get_all_statistics {
+	my( $self, $pool_names ) = @_;
+	return BigIP::iControl::LocalLB::Pool::PoolStatistics->new( 
+		$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_all_statistics',
+						data		=> { pool_names => $pool_names } ) )
+}
+
 sub get_statistics {
 	my ( $self, $pool_names, $members ) = @_;
 
