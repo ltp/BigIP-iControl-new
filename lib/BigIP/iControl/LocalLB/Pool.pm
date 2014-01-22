@@ -3,6 +3,7 @@ package BigIP::iControl::LocalLB::Pool;
 use strict;
 use warnings;
 
+use BigIP::iControl::Common::HAAction;
 use BigIP::iControl::LocalLB::ObjectStatus;
 use BigIP::iControl::LocalLB::Pool::PoolStatistics;
 use Scalar::Util qw(weaken);
@@ -57,10 +58,11 @@ sub get_minimum_up_member {
 
 sub get_minimum_up_member_action {
 	my( $self, $pool_names ) = @_;
-	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
+	return map { BigIP::iControl::Common::HAAction->new( $_ ) }
+		@{$self->{_icontrol}->_request(	module		=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_minimum_up_member_action',
-						data		=> { pool_names => $pool_names } )
+						data		=> { pool_names => $pool_names } ) }
 }
 
 sub get_active_member_count {
