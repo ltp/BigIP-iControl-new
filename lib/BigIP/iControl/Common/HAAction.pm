@@ -3,6 +3,8 @@ package BigIP::iControl::Common::HAAction;
 use strict;
 use warnings;
 
+use overload ( '""' => \&stringify );
+
 our $VERSION = '0.01';
 
 our $map = {
@@ -49,7 +51,7 @@ our $map = {
 	HA_ACTION_GO_OFFLINE_ABORT_TM => {
 		value	=> 10,
 		desc	=> 'Go offline & abort the Traffic Manager.',
-	}
+	},
 	HA_ACTION_GO_OFFLINE_DOWNLINKS => {
 		value	=> 11,
 		desc	=> 'Go offline & down the links (TMM network ports).'
@@ -61,13 +63,15 @@ our $map = {
 };
 
 sub new {
-	my ($class, $args) = @_;
+	my ($class, $haaction) = @_;
 	my $self = bless {}, $class;
-	my $value = $args->{value};
-	my $desc = $args->{desc};
+	$self->{haaction} = $haaction;
 	return $self
 }
 
-sub value { return $_[0]->{value} }
+sub value 	{ return $map->{ $_[0] }->{value} 	}
 
-sub desc { return $_[0]->{desc} }
+sub desc 	{ return $map->{ $_[0] }->{desc} 	}
+
+sub stringify 	{ return "$_[0]->{haaction}"		}
+1;
