@@ -65,6 +65,15 @@ sub get_minimum_up_member_action {
 						data		=> { pool_names => $pool_names } ) }
 }
 
+sub get_minimum_up_member_enabled_state {
+	my( $self, $pool_names ) = @_;
+	return map { BigIP::iControl::Common::EnabledState->new( $_ ) }
+	@{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_minimum_up_member_enabled_state',
+						data		=> { pool_names => $pool_names } ) }
+}
+
 sub get_active_member_count {
 	my( $self, $pool_names ) = @_;
 	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
