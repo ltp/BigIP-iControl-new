@@ -55,6 +55,14 @@ sub get_minimum_up_member {
 						data		=> { pool_names => $pool_names } )
 }
 
+sub get_minimum_up_member_action {
+	my( $self, $pool_names ) = @_;
+	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_minimum_up_member_action',
+						data		=> { pool_names => $pool_names } )
+}
+
 sub get_active_member_count {
 	my( $self, $pool_names ) = @_;
 	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
