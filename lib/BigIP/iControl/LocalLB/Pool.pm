@@ -10,6 +10,26 @@ use Scalar::Util qw(weaken);
 
 our $VERSION = '0.01';
 
+our $map = {
+	get_monitor_association	=> {}
+};
+
+foreach my $method (keys %{$map}) {
+	no strict 'refs';
+	*{__PACKAGE__."::$method"} = sub {
+		my( $self, $pool_names ) = @_;
+		my @r = $self->{_icontrol}->_request(
+			module		=> 'LocalLB', 
+			interface	=> 'Pool',
+			method		=> $method,
+			data		=> { pool_names => $pool_names } 
+		);
+		return ( defined $map->{ $method->{ class } } ) 
+			? map { $map->{ $method->{ class } }->new( $_ ) } @r
+			: @r
+	}
+}
+
 sub new {
 	my( $class, $icontrol, $name, %args ) = @_;
 	my $self = bless {}, $class;
