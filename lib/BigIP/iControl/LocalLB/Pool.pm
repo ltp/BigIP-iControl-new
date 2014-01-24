@@ -11,7 +11,8 @@ use Scalar::Util qw(weaken);
 our $VERSION = '0.01';
 
 our $map = {
-	get_monitor_association	=> {}
+	get_monitor_association	=> {},
+	get_monitor_instance	=> {},
 };
 
 foreach my $method (keys %{$map}) {
