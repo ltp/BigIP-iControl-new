@@ -6,13 +6,16 @@ use warnings;
 use BigIP::iControl::Common::HAAction;
 use BigIP::iControl::LocalLB::ObjectStatus;
 use BigIP::iControl::LocalLB::Pool::PoolStatistics;
+use BigIP::iControl::LocalLB::MonitorIPPort;
 use Scalar::Util qw(weaken);
 
 our $VERSION = '0.01';
 
 our $map = {
 	get_monitor_association	=> {},
-	get_monitor_instance	=> {},
+	get_monitor_instance	=> { 
+					class => 'BigIP::iControl::LocalLB::MonitorIPPort'
+				},
 };
 
 foreach my $method (keys %{$map}) {
@@ -25,8 +28,8 @@ foreach my $method (keys %{$map}) {
 			method		=> $method,
 			data		=> { pool_names => $pool_names } 
 		);
-		return ( defined $map->{ $method->{ class } } ) 
-			? map { $map->{ $method->{ class } }->new( $_ ) } @r
+		return ( defined $map->{$method}->{class} ) 
+			? map { $map->{$method}->{class}->new( $_ ) } @r 
 			: @r
 	}
 }
