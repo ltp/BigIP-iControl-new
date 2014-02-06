@@ -59,6 +59,21 @@ sub get_monitor_association {
 						data		=> { pool_names => $pool_names } ) }
 }
 
+sub get_monitor_instance {
+	my( $self, $pool_names ) = @_;
+	my @res;
+
+	foreach my $arr (@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_monitor_instance',
+						data		=> { pool_names => $pool_names }
+	) }) {
+		push @res, [ map { BigIP::iControl::LocalLB::MonitorInstanceState->new($_) } @{ $arr } ]
+	}
+
+	return @res
+}
+
 sub get_minimum_active_member {
 	my( $self, $pool_names ) = @_;
 	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
