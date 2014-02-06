@@ -7,32 +7,18 @@ use BigIP::iControl::Common::HAAction;
 use BigIP::iControl::LocalLB::ObjectStatus;
 use BigIP::iControl::LocalLB::Pool::PoolStatistics;
 use BigIP::iControl::LocalLB::MonitorIPPort;
+use BigIP::iControl::LocalLB::Pool::MonitorAssociation;
+use BigIP::iControl::LocalLB::MonitorInstanceState;
 use Scalar::Util qw(weaken);
 
 our $VERSION = '0.01';
 
 our $map = {
-	get_monitor_association	=> {},
 	get_monitor_instance	=> { 
-					class => 'BigIP::iControl::LocalLB::MonitorIPPort'
+					class => 'BigIP::iControl::LocalLB::MonitorInstanceState',
+					type  => 'AoA'
 				},
 };
-
-foreach my $method (keys %{$map}) {
-	no strict 'refs';
-	*{__PACKAGE__."::$method"} = sub {
-		my( $self, $pool_names ) = @_;
-		my @r = $self->{_icontrol}->_request(
-			module		=> 'LocalLB', 
-			interface	=> 'Pool',
-			method		=> $method,
-			data		=> { pool_names => $pool_names } 
-		);
-		return ( defined $map->{$method}->{class} ) 
-			? map { $map->{$method}->{class}->new( $_ ) } @r 
-			: @r
-	}
-}
 
 sub new {
 	my( $class, $icontrol, $name, %args ) = @_;
@@ -62,6 +48,15 @@ sub get_list {
 	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_list' )
+}
+
+sub get_monitor_association {
+	my( $self, $pool_names ) = @_;
+	return map { BigIP::iControl::LocalLB::Pool::MonitorAssociation->new( $_ ) } 
+		@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_monitor_association',
+						data		=> { pool_names => $pool_names } ) }
 }
 
 sub get_minimum_active_member {
