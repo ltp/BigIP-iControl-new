@@ -15,3 +15,5 @@ sub new {
 	$self->{instance} = BigIP::iControl::LocalLB::MonitorInstance->new ( $args->{instance} );
 	return $self
 }
+
+1;
