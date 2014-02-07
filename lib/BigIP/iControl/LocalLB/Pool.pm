@@ -155,6 +155,14 @@ sub get_all_statistics {
 						data		=> { pool_names => $pool_names } ) )
 }
 
+sub get_server_ip_tos {
+	my( $self, $pool_names ) = @_;
+	return	$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_server_ip_tos',
+						data		=> { pool_names => $pool_names } ) 
+}
+
 sub get_persistence_record {
 	my( $self, $pool_names, $persistence_modes ) = @_;
 	my @res;
