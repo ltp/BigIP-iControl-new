@@ -63,7 +63,7 @@ sub get_monitor_instance {
 	my( $self, $pool_names ) = @_;
 	my @res;
 
-	foreach my $arr (@{ $self->{_icontrol}->_request(module		=> 'LocalLB',
+	foreach my $arr (@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_monitor_instance',
 						data		=> { pool_names => $pool_names }
@@ -153,6 +153,30 @@ sub get_all_statistics {
 						interface	=> 'Pool',
 						method		=> 'get_all_statistics',
 						data		=> { pool_names => $pool_names } ) )
+}
+
+sub get_persistence_record {
+	my( $self, $pool_names, $persistence_modes ) = @_;
+	my @res;
+	my @records = @{
+		$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_persistence_record',
+						data		=> { pool_names => $pool_names,
+								     persistence_modes => $persistence_modes } 
+		) };
+
+	foreach my $record ( @records ) {
+		my @r;
+
+		if ($record ne '' ) {
+			@r = map { defined $_ ? BigIP::iControl::LocalLB::PersistenceRecord->new($_) : [] } @{ $record }
+		}
+
+		push @res, @r
+	}
+	
+	return @res
 }
 
 sub get_statistics {
