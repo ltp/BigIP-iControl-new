@@ -163,6 +163,14 @@ sub get_server_ip_tos {
 						data		=> { pool_names => $pool_names } ) 
 }
 
+sub get_server_link_qos {
+	my( $self, $pool_names ) = @_;
+	return	$self->{_icontrol}->_request(	module		=> 'LocalLB',
+						interface	=> 'Pool',
+						method		=> 'get_server_link_qos',
+						data		=> { pool_names => $pool_names } ) 
+}
+
 sub get_persistence_record {
 	my( $self, $pool_names, $persistence_modes ) = @_;
 	my @res;
