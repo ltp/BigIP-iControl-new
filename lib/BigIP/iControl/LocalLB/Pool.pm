@@ -36,8 +36,8 @@ sub get_member {
 						interface	=> 'Pool',
 						method		=> 'get_member',
 						data		=> { pool_names => $pools }
-	) }) {
-		push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $self->{_icontrol}, $_ ) } @{ $arr } ]
+	) }) { 
+		push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $_ ) } @{ $arr } ]
 	}
 
 	return @res
