@@ -28,7 +28,9 @@ sub new {
              ->http_request
              ->header( 'Authorization' => 'Basic ' . MIME::Base64::encode( "$self->{username}:$self->{password}" ) );
 
-        eval { $self->{_client}->transport->ssl_opts( verify_hostname => $args{verify_hostname} ) };
+	# verify_hostname disabled parent package rather than SOAP::Transport::HTTP::Client
+        # eval { $self->{_client}->transport->ssl_opts( verify_hostname => $args{verify_hostname} ) };
+        eval { $self->{_client}->ssl_opts( verify_hostname => $args{verify_hostname} ) };
 
         return ( $@ ? undef : $self )
 }
