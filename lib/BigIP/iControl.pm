@@ -20,17 +20,17 @@ sub new {
         defined $args{password} ? $self->{password} = $args{password} : croak 'Constructor failed: password not defined';
         $self->{proto}          = ($args{proto} or 'https');
         $self->{port}           = ($args{port}  or '443');
-        $self->{_client}        = SOAP::Lite->proxy( $self->{proto}.'://'.$self->{server}
-							.':'.$self->{port}.'/iControl/iControlPortal.cgi' )
-				  ->deserializer( BigIP::iControl::Deserializer->new );
+
+        $self->{_client}        = SOAP::Lite->new();
+
+	$self->{_client}->proxy( $self->{proto}.'://'.$self->{server}.':'.$self->{port}.'/iControl/iControlPortal.cgi',
+				 ssl_opts => [ SSL_verify_mode => 0, verify_hostname => 0 ] );
+	$self->{_client}->deserializer( BigIP::iControl::Deserializer->new );
+
         $self->{_client}
              ->transport
              ->http_request
              ->header( 'Authorization' => 'Basic ' . MIME::Base64::encode( "$self->{username}:$self->{password}" ) );
-
-	# verify_hostname disabled parent package rather than SOAP::Transport::HTTP::Client
-        # eval { $self->{_client}->transport->ssl_opts( verify_hostname => $args{verify_hostname} ) };
-        eval { $self->{_client}->ssl_opts( verify_hostname => $args{verify_hostname} ) };
 
         return ( $@ ? undef : $self )
 }
