@@ -29,25 +29,26 @@ sub new {
 }
 
 sub get_member {
-	my ( $self, $pools ) = @_;
+	my ( $self, @pools ) = @_;
 	my @res;
 	
-	foreach my $arr (@{ $self->{_icontrol}->_request(module	=> 'LocalLB',
+	foreach my $pool (@{ $self->{_icontrol}->_request(module=> 'LocalLB',
 						interface	=> 'Pool',
 						method		=> 'get_member',
-						data		=> { pool_names => $pools }
-	) }) { 
-		push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $_ ) } @{ $arr } ]
+						data		=> { pool_names => [ @pools ] }
+	) }) {
+		next unless $pool;
+		push @res, [ map { BigIP::iControl::Common::IPPortDefinition->new( $_ ) } @{ $pool } ]
 	}
 
 	return @res
 }
 
 sub get_list {
-	my( $self, $pool_names ) = @_;
-	return $self->{_icontrol}->_request(	module		=> 'LocalLB',
+	my $self = shift;
+	return @{ $self->{_icontrol}->_request(	module		=> 'LocalLB',
 						interface	=> 'Pool',
-						method		=> 'get_list' )
+						method		=> 'get_list' ) }
 }
 
 sub get_monitor_association {
